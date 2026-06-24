@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PrintFax - Professional Printing Solutions</title>
+
+    <meta
+      name="description"
+      content="Shop high-quality printers from leading brands. Browse our selection of HP, Canon, Epson, and Brother printers for home and office use."
+    />
+    <meta name="author" content="PrintFax" />
+
+    <meta
+      property="og:title"
+      content="PrintFax - Professional Printing Solutions"
+    />
+    <meta
+      property="og:description"
+      content="Shop high-quality printers from leading brands. Browse our selection of HP, Canon, Epson, and Brother printers for home and office use."
+    />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@PrintFax" />
+    <script type="module" crossorigin src="/assets/index-DLuWx0YG.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-C6DvATI-.css">
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <div id="support-popup-root"></div>
+
+    <!-- ========================== PRINTFAX CHAT POPUP ========================== -->
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+    <style>
+      /* === Floating Button === */
+      #pf-chat-circle {
+        position: fixed;
+        bottom: 70px;
+        right: 20px;
+        width: 62px;
+        height: 62px;
+        background: linear-gradient(135deg, #007aff, #0051c9);
+        border-radius: 50%;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+        cursor: pointer;
+        z-index: 9999999;
+      }
+      #pf-chat-circle svg {
+        width: 32px;
+        height: 32px;
+        fill: white;
+      }
+
+      /* === Chatbox === */
+      #pf-chatbox {
+        position: fixed;
+        bottom: 20px;
+        right: -360px;
+        width: 340px;
+        background: #0f0f0f;
+        color: white;
+        border-radius: 14px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+        transition: 0.35s ease;
+        z-index: 99999999 !important;
+        overflow: hidden;
+        pointer-events: auto !important;
+      }
+
+      #pf-chatbox.open {
+        right: 20px;
+      }
+
+      .pf-header {
+        background: linear-gradient(to right, #007aff, #0051c9);
+        padding: 14px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+      }
+
+      .pf-header-title {
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .pf-header-sub {
+        font-size: 11px;
+        opacity: 0.85;
+      }
+
+      /* FIX CLOSE BUTTON — ALWAYS CLICKABLE */
+      #pf-close-main,
+      #pf-close-thank {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 22px;
+        cursor: pointer;
+        z-index: 999999999 !important;
+        color: #fff;
+        pointer-events: auto !important;
+      }
+
+      .pf-body {
+        padding: 16px;
+      }
+      .pf-body label {
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .pf-body input,
+      .pf-body textarea {
+        width: 100%;
+        padding: 11px;
+        margin-top: 6px;
+        margin-bottom: 14px;
+        background: #1b1b1b;
+        border: 1px solid #333;
+        color: white;
+        border-radius: 8px;
+      }
+
+      .pf-body textarea {
+        height: 80px;
+        resize: none;
+      }
+
+      #pf-submit {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #007aff, #0051c9);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      #pf-phone {
+        padding-left: 88px !important;
+        height: 48px;
+      }
+      .iti {
+        width: 100% !important;
+      }
+
+      /* === THANK YOU POPUP === */
+      .pf-thank-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 999999999;
+        pointer-events: auto !important;
+      }
+
+      .pf-thank-overlay.show {
+        display: flex !important;
+      }
+
+      .pf-thank-card {
+        background: #101010;
+        padding: 28px;
+        width: 300px;
+        border-radius: 14px;
+        text-align: center;
+        color: #fff;
+        border: 1px solid #1f1f1f;
+        position: relative;
+      }
+
+      @media (max-width: 768px) {
+        #pf-chatbox {
+          right: auto !important;
+          left: -340px !important;
+        }
+
+        #pf-chatbox.open {
+          left: 10px !important;
+          right: auto !important;
+        }
+      }
+    </style>
+
+    <!-- Floating Chat Button -->
+    <div id="pf-chat-circle" onclick="pfOpenChat()">
+      <svg viewBox="0 0 24 24">
+        <path
+          d="M12 1a9 9 0 0 0-9 9v7a3 3 0 0 0 3 3h2v-8H6V10a6 6 0 0 1 12 0v2h-2v8h2a3 3 0 0 0 3-3v-7a9 9 0 0 0-9-9z"
+        />
+      </svg>
+    </div>
+
+    <!-- Chatbox -->
+    <div id="pf-chatbox">
+      <div class="pf-header">
+        <svg width="30" height="30" fill="white" viewBox="0 0 24 24">
+          <path
+            d="M12 1a9 9 0 0 0-9 9v7a3 3 0 0 0 3 3h2v-8H6V10a6 6 0 0 1 12 0v2h-2v8h2a3 3 0 0 0 3-3v-7a9 9 0 0 0-9-9z"
+          />
+        </svg>
+        <div>
+          <div class="pf-header-title">PrintFax Support Assistant</div>
+          <div class="pf-header-sub">Online · Typically responds instantly</div>
+        </div>
+
+        <span id="pf-close-main">✕</span>
+      </div>
+
+      <form
+        id="pf-form"
+        class="pf-body"
+        method="POST"
+        action="https://formspree.io/f/mgvdpgln"
+      >
+        <label>Your Name</label>
+        <input type="text" name="name" required placeholder="Full Name" />
+
+        <label>Email Address</label>
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="you@example.com"
+        />
+
+        <label>Phone Number</label>
+        <input id="pf-phone" type="tel" name="phone" required />
+
+        <label>Your Issue</label>
+        <textarea
+          name="issue"
+          required
+          placeholder="Describe your issue..."
+        ></textarea>
+
+        <button id="pf-submit" type="submit">Submit Request</button>
+      </form>
+    </div>
+
+    <!-- THANK YOU POPUP -->
+    <div id="pf-thank" class="pf-thank-overlay">
+      <div class="pf-thank-card">
+        <span id="pf-close-thank">✕</span>
+
+        <div
+          style="
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, #007aff, #0051c9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            color: white;
+          "
+        >
+          ✔
+        </div>
+
+        <h3>Thank You!</h3>
+        <p>Your request has been submitted. We will contact you shortly.</p>
+
+        <button class="pf-thank-btn" onclick="pfCloseThank()">OK</button>
+      </div>
+    </div>
+
+    <script>
+      function pfOpenChat() {
+        document.getElementById("pf-chatbox").classList.add("open");
+        document.getElementById("pf-chat-circle").style.display = "none";
+      }
+
+      function pfMinimize() {
+        document.getElementById("pf-chatbox").classList.remove("open");
+        document.getElementById("pf-chat-circle").style.display = "flex";
+      }
+
+      /* === Device Check (Desktop auto-open only) === */
+      function isMobile() {
+        return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(
+          navigator.userAgent
+        );
+      }
+
+      window.onload = () => {
+        if (!isMobile()) {
+          pfOpenChat(); // Desktop auto-open
+        } else {
+          document.getElementById("pf-chat-circle").style.display = "flex"; // Mobile bubble only
+        }
+      };
+
+      /* === Phone Input === */
+      const phoneInput = window.intlTelInput(
+        document.querySelector("#pf-phone"),
+        {
+          separateDialCode: true,
+          preferredCountries: ["in", "us", "gb", "ca", "au"],
+          utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        }
+      );
+
+      /* === Auto Country === */
+      (async () => {
+        try {
+          const res = await fetch("https://ipwho.is/");
+          const data = await res.json();
+          phoneInput.setCountry(data.country_code?.toLowerCase() || "us");
+        } catch {
+          phoneInput.setCountry("us");
+        }
+      })();
+
+      /* === Form Submit === */
+      document
+        .getElementById("pf-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const data = new FormData(e.target);
+
+          const res = await fetch("https://formspree.io/f/mgvdpgln", {
+            method: "POST",
+            body: data,
+            headers: { Accept: "application/json" },
+          });
+
+          if (res.ok) {
+            e.target.reset();
+            document.getElementById("pf-thank").classList.add("show");
+          } else {
+            alert("Error submitting form.");
+          }
+        });
+
+      function pfCloseThank() {
+        document.getElementById("pf-thank").classList.remove("show");
+        pfMinimize();
+      }
+
+      /* === Close Click Fix === */
+      ["click", "touchstart"].forEach((evt) => {
+        document
+          .getElementById("pf-close-main")
+          .addEventListener(evt, () => pfMinimize());
+
+        document
+          .getElementById("pf-close-thank")
+          .addEventListener(evt, () => pfCloseThank());
+      });
+    </script>
+  </body>
+</html>
